@@ -4,7 +4,6 @@ out
 *.vsix
 .vscode-test
 .DS_Store
-pnpm-lock.yaml
 *.log
 .env
 build/

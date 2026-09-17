@@ -34,6 +34,7 @@ The detail view keeps artifacts, task progress, and workflow actions together. V
 
 ## Installation
 
+- **From internal GitHub release** (MotusLab): download `openspec-workflow-<version>.vsix` from [GitHub Releases](https://github.com/MotusLabs/openspec-ext/releases) and install via **Extensions: Install from VSIX…**, or run `code --install-extension openspec-workflow-<version>.vsix`. Every PR merge to `main` publishes a new `v<version>-<PR number>` build. This is the internal extension ID `motuslabs.openspec-workflow`; uninstall any older `randysss.openspec-workflow` build first.
 - **From marketplace**: Install **OpenSpec** from the [VS Code Marketplace](https://marketplace.visualstudio.com/) or [Open VSX](https://open-vsx.org/) (e.g. in Cursor).
 - **Requirements**: [OpenSpec CLI](https://github.com/Fission-AI/OpenSpec#quick-start); a workspace that contains (or will contain) `openspec/config.yaml`. The extension activates when it finds an OpenSpec workspace.
 
@@ -74,9 +75,9 @@ A row opens only its detail view, not a new editor window. A Project member swit
 
 ### Complete user guide
 
-- [English user guide](https://github.com/RandyZ/openspec-ext/blob/main/docs/USER_GUIDE.md)
-- [Plugin interface](https://github.com/RandyZ/openspec-ext/blob/main/docs/USER_GUIDE.md#plugin-interface)
-- [简体中文使用指南](https://github.com/RandyZ/openspec-ext/blob/main/docs/USER_GUIDE.zh-CN.md)
+- [English user guide](https://github.com/MotusLabs/openspec-ext/blob/main/docs/USER_GUIDE.md)
+- [Plugin interface](https://github.com/MotusLabs/openspec-ext/blob/main/docs/USER_GUIDE.md#plugin-interface)
+- [简体中文使用指南](https://github.com/MotusLabs/openspec-ext/blob/main/docs/USER_GUIDE.zh-CN.md)
 
 ### Commands
 
