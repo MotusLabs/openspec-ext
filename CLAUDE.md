@@ -94,8 +94,8 @@ All user-facing strings go through `t('key')` from `src/i18n/`. Locales are in `
 ## Non-obvious caveats
 
 - Run `npx eslint src/` rather than `npx eslint .` — the project has pre-existing `no-undef` issues on Node/browser globals, and linting `dist/` or `esbuild.js` is not intended.
-- `pnpm-lock.yaml` is not committed; `pnpm install` resolves fresh each time.
-- esbuild may log a cosmetic warning about ignored build scripts; the binary still resolves correctly.
+- `pnpm-lock.yaml` is committed; CI installs with `pnpm install --frozen-lockfile`. After changing dependencies, run `pnpm install` and commit the regenerated lockfile.
+- esbuild may log a cosmetic warning about ignored build scripts; the binary still resolves correctly. This is pnpm 10 blocking dependency build scripts by default — the affected packages (esbuild, sharp, @resvg/resvg-js) ship prebuilt binaries via optionalDependencies and work without scripts.
 - The package does not set `"type": "module"`, so `eslint.config.js` and `postcss.config.js` use ESM syntax and Node logs a cosmetic `MODULE_TYPELESS_PACKAGE_JSON` warning.
 - `DataManager.initialize()` throws if the OpenSpec CLI is unavailable, which prevents extension activation. Unit tests bypass this by mocking CLI calls.
 - The `openspec` workspace under `openspec/` in this repo is used for extension development and manual testing.
@@ -104,11 +104,12 @@ All user-facing strings go through `t('key')` from `src/i18n/`. Locales are in `
 
 ## Publishing
 
-See `docs/PUBLISHING.md` for full details. Short version:
+See `docs/PUBLISHING.md` for full details. The primary channel is the internal GitHub Release pipeline (`.github/workflows/`):
 
-1. Bump `version` in `package.json` and commit.
-2. `pnpm run package` produces a `.vsix`.
-3. `pnpm run publish:marketplace` (requires `vsce login` or `VSCE_PAT`).
-4. `OVSX_TOKEN=<token> pnpm run publish:openvsx` or `make publish-ovsx` (loads `.env` if present).
+- Every PR merge to `main` automatically produces a prerelease `v<version>-<PR number>` (e.g. `v0.2.2-123`) with the `.vsix` attached.
+- Stable releases: bump `version` in `package.json`, update `CHANGELOG.md`, commit, then push a `vX.Y.Z` tag — CI runs tests, packages, and creates the GitHub Release.
+- Install internally by downloading the `.vsix` from Releases ("Install from VSIX…" or `code --install-extension`). The extension ID is `motuslabs.openspec-workflow`.
+
+Public marketplaces (optional): `pnpm run publish:marketplace` (requires `vsce login` or `VSCE_PAT`), or `OVSX_TOKEN=<token> pnpm run publish:openvsx` / `make publish-ovsx` (loads `.env` if present).
 
 Do not commit tokens or `.env`.

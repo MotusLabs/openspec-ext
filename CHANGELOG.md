@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- CI/CD via GitHub Actions: PR validation (test, lint, package smoke) and internal releases on GitHub Releases. Every PR merge to `main` publishes a prerelease `v<version>-<PR number>` build; pushing a `vX.Y.Z` tag publishes a stable release. Both attach the `.vsix` for internal installation.
+- `pnpm-lock.yaml` is now committed; CI installs with `--frozen-lockfile`.
+- `THIRD_PARTY_NOTICES.md` shipped in the `.vsix` attributing `@vscode/codicons` (CC-BY-4.0).
+
+### Changed
+
+- Extension identity for internal distribution: `publisher` is now `motuslabs` (extension ID `motuslabs.openspec-workflow`) and `displayName` is "OpenSpec (MotusLab)". Settings keys (`openspec.*`) are unchanged; uninstall older `randysss.openspec-workflow` builds.
+- `repository.url` and documentation links now point at `MotusLabs/openspec-ext`.
+
 ## [0.2.2] - 2026-09-08
 
 ### Fixed
@@ -123,9 +134,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Workspace and bundled path resolution for extension resources.
 
-[Unreleased]: https://github.com/RandyZ/openspec-ext/compare/v0.2.1...HEAD
-[0.2.1]: https://github.com/RandyZ/openspec-ext/compare/v0.2.0...v0.2.1
-[0.2.0]: https://github.com/RandyZ/openspec-ext/compare/v0.1.4...v0.2.0
-[0.1.4]: https://github.com/RandyZ/openspec-ext/compare/v0.1.3...v0.1.4
-[0.1.3]: https://github.com/RandyZ/openspec-ext/compare/v0.1.2...v0.1.3
-[0.1.2]: https://github.com/RandyZ/openspec-ext/releases/tag/v0.1.2
+[Unreleased]: https://github.com/MotusLabs/openspec-ext/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/MotusLabs/openspec-ext/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/MotusLabs/openspec-ext/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/MotusLabs/openspec-ext/compare/v0.1.4...v0.2.0
+[0.1.4]: https://github.com/MotusLabs/openspec-ext/compare/v0.1.3...v0.1.4
+[0.1.3]: https://github.com/MotusLabs/openspec-ext/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/MotusLabs/openspec-ext/releases/tag/v0.1.2

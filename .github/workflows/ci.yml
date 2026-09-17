@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+# Read-only token; nothing here needs more.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Test, lint, package
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        # Reads the pinned version from packageManager: pnpm@10.14.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Test
+        run: pnpm test
+
+      - name: Lint (src only)
+        run: pnpm exec eslint src/
+
+      # Package smoke test: exercises icon-svg-to-png (sharp + resvg native),
+      # the marketplace README rewrite, and vsce packaging on every PR.
+      # Runs the build internally; no separate build step needed.
+      - name: Package
+        run: pnpm run package
+
+      - name: Locate vsix
+        id: vsix
+        run: |
+          VSIX="$(ls openspec-workflow-*.vsix 2>/dev/null | head -n1 || true)"
+          if [ -z "$VSIX" ]; then
+            echo "::error::No openspec-workflow-<version>.vsix produced by packaging step"
+            exit 1
+          fi
+          echo "path=$VSIX" >> "$GITHUB_OUTPUT"
+
+      - name: Upload vsix artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: vsix-${{ github.sha }}
+          path: ${{ steps.vsix.outputs.path }}
+          if-no-files-found: error
+          retention-days: 14
